@@ -9,6 +9,8 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@fontsource-variable/cinzel": "^5.2.5",
+    "@fontsource/ubuntu": "^5.2.5",
     "@tailwindcss/vite": "^4.1.8",
     "astro": "^5.8.1",
     "tailwindcss": "^4.1.8"
