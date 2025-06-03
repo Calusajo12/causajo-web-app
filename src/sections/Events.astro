@@ -4,10 +4,11 @@ import Carousel from "../components/Carousel.astro";
 import { events } from "../../events";
 const firstThreeEvents = events.slice(0, 3);
 import { ArrowRight } from "@lucide/astro";
+import { ViewTransitions } from 'astro:transitions';
 ---
 
 <section class="p-4 md:p-8 mb-5">
-  <div class="flex flex-col items-center content-center gap-6 lg:gap-10 max-w-screen-xl mx-auto">
+  <div class="flex flex-col items-center content-center gap-6 lg:gap-10 max-w-screen-xl mx-auto lg:view" >
     <div>
       <h1 class="text-2xl lg:text-6xl text-center">
         Eventos que inspiran, <br />
@@ -18,14 +19,15 @@ import { ArrowRight } from "@lucide/astro";
       <h2 class="font-bold text-xl lg:text-4xl">Portfolio</h2>
       <p>Descubre nuestra magia en cada evento</p>
     </div>
+    
     <div class="hidden lg:flex flex-col w-full items-center">
       {
         firstThreeEvents.map((event) => (
-          <Event title={event.title} image={event.image} link={event.link} />
+          <Event class="block-event pb-8" title={event.title} description={event.description} image={event.image} link={event.link} />
         ))
       }
     </div>
-    
+
 
     <div class="lg:hidden w-full px-2">
       <Carousel events={events} />
@@ -64,4 +66,22 @@ import { ArrowRight } from "@lucide/astro";
     font-family: "Cinzel Variable", serif;
     color: #fff;
   }
+
+  @keyframes appear {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .block-event {
+    animation: appear 0.5s ease-in-out;
+    animation-timeline: view();
+    animation-range: entry 0;
+  }
+
 </style>
