@@ -12,10 +12,10 @@ const { events } = Astro.props;
   <div class="carousel-inner flex transition-transform duration-300 ease-in-out"  data-current="0">
     {
       events.map((event, index) => (
-        <div class="carousel-item w-full flex-shrink-0" style="flex: 0 0 100%;">
+        <div class="carousel-item w-full px-4 flex-shrink-0" style="flex: 0 0 100%;">
           <div class="flex flex-col items-center p-2">
             <h2 class="font-bold text-xl pb-2">{event.title}</h2>
-            <img class="h-auto w-auto max-w-dvw object-contain rounded-lg mx-auto" src={event.image} alt={event.title} />
+            <img class="h-auto w-auto max-w-dvw object-contain px-2 rounded-lg" src={event.image} alt={event.title} />
             <a href={event.link} target="_blank" rel="noopener noreferrer">
               <div class="flex items-center justify-center pt-2">
                 <p class="underline inline-flex items-center">Cótiza ya</p>

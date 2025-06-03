@@ -1,5 +1,5 @@
 ---
-import { ChevronRight } from '@lucide/astro'
+import { ChevronRight } from "@lucide/astro/icons/chevron-right";
 
 export interface Props {
   title: string;
@@ -9,20 +9,67 @@ export interface Props {
   class: string;
 }
 
- const { title, image, description, link } = Astro.props;
+const { title, image, description, link } = Astro.props;
 ---
 
-<article class={Astro.props.class}>
-    <h2 class="italic font-bold text-2xl pb-2">{title}</h2>
-    <p class="italic text-sm font-light pb-4">{description}</p>
-    <img class="h-auto max-h-auto w-auto max-w-auto object-contain rounded-lg" src={image} alt={title} />
-    <a href={link} target="_blank" rel="noopener noreferrer"> 
-        <div class="flex items-center justify-center pt-4">
-            <p class="underline inline-flex items-center">Cotiza ya<ChevronRight class="w-5 h-5 ml-1" /></p>
-        </div>
-    </a>
+<article class="block-event hidden-left transition-all duration-500 ease-in-out">
+  <h2 class="italic font-bold text-2xl pb-2">{title}</h2>
+  <p class="italic text-sm font-light pb-4">{description}</p>
+  <img
+    class="h-auto max-h-auto w-auto max-w-auto object-contain rounded-lg"
+    src={image}
+    alt={title}
+  />
+  <a href={link} target="_blank" rel="noopener noreferrer">
+    <div class="flex items-center justify-center pt-4">
+      <p class="underline inline-flex items-center">
+        Cotiza ya<ChevronRight class="w-5 h-5 ml-1" />
+      </p>
+    </div>
+  </a>
 </article>
 
 <style>
+  @keyframes appear {
+    from {
+      opacity: 0;
+      transform: translateX(-80px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .hidden-left {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  .show {
+    animation: appear 1s ease-out forwards;
+  }
 
 </style>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      // Reinicia la animación cada vez que entra
+      entry.target.classList.remove('show');
+      void (entry.target as HTMLElement).offsetWidth; 
+      entry.target.classList.add('show');
+    } else {
+      // Oculta el elemento al salir del viewport
+      entry.target.classList.remove('show');
+    }
+  });
+}, {
+  threshold: 0.1 
+});
+
+document.querySelectorAll('.block-event').forEach(el => {
+  observer.observe(el);
+});
+</script>
