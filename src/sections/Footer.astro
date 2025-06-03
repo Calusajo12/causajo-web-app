@@ -1,10 +1,55 @@
 ---
 import Banner from "../components/Banner.astro";
+import { Facebook, Instagram } from "@lucide/astro"
+import TikTok from "../components/icons/TikTok.astro";
 
 
 ---
 
 
-<section>
-    <Banner/>
-</section>
+<footer class=" text-white ">
+    <Banner />
+
+
+  <!-- Logo, dirección y contacto -->
+  <div class="flex flex-col items-center text-center m-20 space-y-6">
+    <img src="/logo_oficial.png" alt="Logo Calusajo" class="h-16 md:h-20 mb-4" />
+    
+
+    <div class="text-sm md:text-base space-y-2">
+      <div>
+        <strong>Dirección:</strong><br />
+        Cra. 3 # 2 - 56 Santandercito, Cundinamarca.
+      </div>
+
+      <div>
+        <strong>Contacto:</strong><br />
+        <a href="tel:18001234567" class="text-blue-400 hover:underline">+57 3104137728</a><br />
+        <a href="mailto:info@relume.io" class="text-blue-400 hover:underline">calusajo1629@gmail.com</a>
+      </div>
+    </div>
+
+    <!-- Redes sociales -->
+    <div class="flex items-center space-x-4 mt-4">
+      <a href="#" class="text-white hover:text-gray-300">
+        <Facebook class="h-6 w-6 " />
+      </a>
+      <a href="#" class="text-white hover:text-gray-300">
+        <Instagram class="h-6 w-6" />
+
+      </a>
+      <a href="#" class="text-white hover:text-gray-300">
+        <TikTok class="h-6 w-6" />
+      </a>
+      
+    </div>
+  </div>
+
+  <!-- Separador -->
+  <div class="border-t border-gray-600 my-6 w-full max-w-4xl mx-auto"></div>
+
+  <!-- Derechos reservados -->
+  <p class="text-center text-sm text-gray-400 mb-4">
+    © 2025 Calusajo. Todos los derechos reservados.
+  </p>
+</footer>
