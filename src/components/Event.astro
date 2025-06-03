@@ -12,21 +12,34 @@ export interface Props {
 const { title, image, description, link } = Astro.props;
 ---
 
-<article class="block-event hidden-left transition-all duration-500 ease-in-out">
+<article
+  class="card block-event hidden-left transition-all duration-500 ease-in-out"
+>
   <h2 class="italic font-bold text-2xl pb-2">{title}</h2>
   <p class="italic text-sm font-light pb-4">{description}</p>
-  <img
-    class="h-auto max-h-auto w-auto max-w-auto object-contain rounded-lg"
-    src={image}
-    alt={title}
-  />
-  <a href={link} target="_blank" rel="noopener noreferrer">
-    <div class="flex items-center justify-center pt-4">
-      <p class="underline inline-flex items-center">
-        Cotiza ya<ChevronRight class="w-5 h-5 ml-1" />
+  <div class="card-inner">
+    <div class="card-front">
+      <img
+        class="h-[100%]w-[100%] max-w-auto object-cover rounded-lg pb-10"
+        src={image}
+        alt={title}
+      />
+    </div>
+    <div class="card-back">
+      <h1 class="text-center text-2xl text-amber-300">Descripción</h1>
+      <p class="text-center text-sm font-light px-4 py-2">
+        {description ? description : "No hay descripción disponible."}
       </p>
     </div>
-  </a>
+
+    <a href={link} target="_blank" rel="noopener noreferrer">
+      <div class="flex items-center justify-center pt-4">
+        <p class="underline inline-flex items-center">
+          Cotiza ya<ChevronRight class="w-5 h-5 ml-1" />
+        </p>
+      </div>
+    </a>
+  </div>
 </article>
 
 <style>
@@ -50,26 +63,74 @@ const { title, image, description, link } = Astro.props;
     animation: appear 1s ease-out forwards;
   }
 
+  .card {
+    width: 1200px;
+    height: 728.1px;
+    perspective: 1000px;
+    margin-bottom: 3rem; 
+    overflow: visible;
+  }
+
+  .card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    
+  }
+
+  .card:hover .card-inner {
+    transform: rotateY(180deg);
+    scale: 0.8;
+  }
+
+  .card-front,
+  .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+  }
+  .card-front {
+    background-color: transparent;
+    padding-bottom: 50px;
+    color: black;
+  }
+  .card-back {
+    background-color: #342f5a;
+    transform: rotateY(180deg);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    border-radius: 5px;    
+  }
+
+  .block-event {
+    margin-bottom: 8rem;
+  }
 </style>
 
 <script>
-  const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      // Reinicia la animación cada vez que entra
-      entry.target.classList.remove('show');
-      void (entry.target as HTMLElement).offsetWidth; 
-      entry.target.classList.add('show');
-    } else {
-      // Oculta el elemento al salir del viewport
-      entry.target.classList.remove('show');
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // Reinicia la animación cada vez que entra
+          entry.target.classList.remove("show");
+          void (entry.target as HTMLElement).offsetWidth;
+          entry.target.classList.add("show");
+        } else {
+          // Oculta el elemento al salir del viewport
+          entry.target.classList.remove("show");
+        }
+      });
+    },
+    {
+      threshold: 0.1,
     }
-  });
-}, {
-  threshold: 0.1 
-});
+  );
 
-document.querySelectorAll('.block-event').forEach(el => {
-  observer.observe(el);
-});
+  document.querySelectorAll(".block-event").forEach((el) => {
+    observer.observe(el);
+  });
 </script>
