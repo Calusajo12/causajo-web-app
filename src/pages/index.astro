@@ -1,11 +1,17 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Events from '../sections/Events.astro';
+import Home from '../sections/Home.astro';
+import Services from '../sections/Services.astro';
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
 <Layout title='Pagina Oficial de Calusajo'>
-	<h2 class="font-cinzel
-text-4xl font-bold flex items-center justify-center">Hola <span class="text-amber-300 pl-2 " >  Mundo</span></h2>
+	<main>
+		<Home />
+		<Events />
+		<Services />
+	</main>
 </Layout>

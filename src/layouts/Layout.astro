@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import '@fontsource-variable/cinzel';
 import '@fontsource/ubuntu';
+import Header from "../components/Header.astro";
 
 
 
@@ -22,11 +23,12 @@ interface Props {
 		<title>{Astro.props.title}</title>
 	</head>
 	<body>
+		<Header/>
 		<slot />
 	</body>
 </html>
 
-<style>
+<style is:global>
 
 	html{
 		
@@ -37,7 +39,10 @@ interface Props {
 		width: 100%;
 		height: 100%;
 		background: #342F5A;
-
+		font-family: 'Ubuntu', sans-serif;
+	}
+	h1{
+		font-family: 'Cinzel Variable', serif;
 	}
 	
 </style>
