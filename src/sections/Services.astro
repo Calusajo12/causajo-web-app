@@ -1,0 +1,46 @@
+---
+import { services } from "../../services";
+import Card from "../components/Card.astro";
+
+const firstRow = services.slice(0, 3);
+const secondRow = services.slice(3, 6);
+---
+
+<section>
+  <div
+    class="flex flex-col items-center content-center gap-6 lg:gap-10 max-w-screen-xl mx-auto pt-5 lg:view lg:mt-10 p-4 md:p-8 mb-5"
+  >
+    <h1 class="text-4xl lg:text-6xl text-center">
+      Nuestros servicios, <br />
+      <span class="text-amber-400">perfectos para ti</span>
+    </h1>
+    <h2 class="font-semibold text-lg lg:text-2xl">
+      Conoce mas a fondo nuestros servicios
+    </h2>
+  </div>
+  <div
+    class="flex flex-col lg:flex-col items-center justify-center gap-8 p-4 md:p-8 mb-5"
+  >
+    <div class="flex flex-col lg:flex-row gap-8 ">
+      {
+        firstRow.map((service) => (
+          <Card name={service.name} description={service.description} />
+        ))
+      }
+    </div>
+    <div class="flex flex-col lg:flex-row gap-8">
+      {
+        secondRow.map((service) => (
+          <Card name={service.name} description={service.description} />
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  h1 {
+    font-family: "Cinzel Variable", serif;
+    color: #fff;
+  }
+</style>
