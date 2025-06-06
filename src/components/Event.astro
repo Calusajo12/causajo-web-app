@@ -17,10 +17,10 @@ const { title, image, description, link } = Astro.props;
 >
   <h2 class="italic font-bold text-2xl pb-2">{title}</h2>
   <p class="italic text-sm font-light pb-4">{description}</p>
-  <div class="card-inner">
+  <div class="card-inner flex flex-col items-center justify-center bg-transparent rounded-lg shadow-lg">
     <div class="card-front">
       <img
-        class="h-[100%]w-[100%] max-w-auto object-cover rounded-lg pb-10"
+        class="h-full w-full object-cover"
         src={image}
         alt={title}
       />
@@ -54,6 +54,7 @@ const { title, image, description, link } = Astro.props;
     }
   }
 
+
   .hidden-left {
     opacity: 0;
     transform: translateX(-20px);
@@ -68,7 +69,7 @@ const { title, image, description, link } = Astro.props;
     height: 728.1px;
     perspective: 1000px;
     margin-bottom: 3rem; 
-    overflow: visible;
+    overflow: hidden;
   }
 
   .card-inner {
@@ -81,7 +82,7 @@ const { title, image, description, link } = Astro.props;
     
   }
   .card:hover .card-inner {
-    transform: rotateY(180deg) scale(0.8);
+    transform: rotateY(180deg) scale(0.75);
     transition: transform 0.6s ease-in-out;
   }
 
