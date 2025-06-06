@@ -10,13 +10,13 @@ const { name, description } = Astro.props;
 ---
 
 <article
-  class="flex flex-col w-sm h-auto gap-y-10 rounded-lg shadow-2xl bg-transparent py-14 transition-transform duration-500 ease-in-out transform hover:scale-105 items-center border-[1px] border-black block-service"
+  class="flex flex-col w-full md:w-full lg:w-96 rounded-lg shadow-2xl bg-transparent py-6 md:py-8 transition-transform duration-500 ease-in-out transform hover:scale-105 items-center border-[1px] border-black block-service"
 >
-  <picture class="w-auto h-auto text-amber-300">
+  <picture class="w-16 h-16 md:w-20 md:h-20 text-amber-300 flex items-center justify-center">
     <Calendar />
   </picture>
-  <div class="flex flex-col items-center gap-2 text-center">
-    <h2 class="text-2xl font-bold text-white">{name}</h2>
+  <div class="flex flex-col items-center gap-2 text-center w-full px-4 mt-4">
+    <h2 class="text-xl md:text-2xl font-bold text-white">{name}</h2>
     <p class="px-2 text-center text-sm">{description}</p>
   </div>
 </article>
@@ -36,6 +36,44 @@ const { name, description } = Astro.props;
   .block-service {
     opacity: 0;
     transform: translateX(-20px);
+    height: auto;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+    overflow: visible;
+    box-sizing: border-box;
+    max-width: 100%;
+  }
+  
+  /* Media query específica para iPad Pro y tablets similares */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .block-service {
+      min-height: 280px;
+      width: 100% !important; /* Cambio importante: ancho completo en tablets */
+      max-width: 600px !important; /* Limitamos el ancho máximo */
+      padding: 1.5rem 1rem;
+      margin-bottom: 3rem; /* Aumentamos el margen para mejor separación */
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  /* Media query para pantallas grandes */
+  @media (min-width: 1024px) {
+    .block-service {
+      min-height: 320px;
+      padding: 2rem 1.5rem;
+    }
+  }
+
+  /* Ajuste adicional para pantallas pequeñas */
+  @media (max-width: 767px) {
+    .block-service {
+      min-height: 230px;
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+    }
   }
 
   .show {

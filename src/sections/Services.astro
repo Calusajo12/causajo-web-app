@@ -21,14 +21,14 @@ const secondRow = services.slice(3, 6);
   <div
     class="flex flex-col lg:flex-col items-center justify-center gap-8 p-4 md:p-8 mb-5"
   >
-    <div class="flex flex-col lg:flex-row gap-8 ">
+    <div class="flex flex-col lg:flex-row gap-8 service">
       {
         firstRow.map((service) => (
           <Card name={service.name} description={service.description} />
         ))
       }
     </div>
-    <div class="flex flex-col lg:flex-row gap-8">
+    <div class="flex flex-col lg:flex-row gap-8 service">
       {
         secondRow.map((service) => (
           <Card name={service.name} description={service.description} />
@@ -43,4 +43,10 @@ const secondRow = services.slice(3, 6);
     font-family: "Cinzel Variable", serif;
     color: #fff;
   }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .service {
+      margin-bottom: 4rem;
+      flex-direction: column;
+    }
 </style>

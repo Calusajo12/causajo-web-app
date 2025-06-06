@@ -6,6 +6,12 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout title="Todos los Eventos - Calusajo">
   <main class="p-4 md:p-8 mb-5">
+    <a href="/" class=" mb-4 lg:mb-4 fixed top-10 left-10 z-10">
+      <button
+        class="border-white border-[1px] p-2 px-4 rounded-xl hover:cursor-pointer hover:scale-110 transition-all text-white"
+        >Volver</button
+      >
+    </a>
     <div
       class="flex flex-col items-center content-center gap-6 lg:gap-10 max-w-screen-xl mx-auto lg:view"
     >
@@ -35,14 +41,14 @@ import Layout from "../layouts/Layout.astro";
       </div>
 
       <div
-        class="flex flex-col sm:flex-row items-center justify-center pt-4 gap-2 text-center"
+        class="flex flex-col sm:flex-col items-center justify-center pt-4 gap-2 text-center"
       >
         <p class="text-white font-bold">¿Tienes un evento planeado?</p>
         <button
           class="bg-amber-400 text-black font-extrabold px-4 py-2 rounded-lg hover:bg-amber-500 whitespace-nowrap hover:cursor-pointer"
         >
           Cotizalo ya aquí
-        </button>
+        </button> 
       </div>
     </div>
   </main>
