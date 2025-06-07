@@ -1,27 +1,160 @@
 ---
-import { ChevronRight } from '@lucide/astro'
+import { ChevronRight } from "@lucide/astro";
+import {ArrowRight} from "@lucide/astro";
 
 export interface Props {
   title: string;
   image: string;
   description?: string;
   link: string;
+  class: string;
 }
 
- const { title, image, description, link } = Astro.props;
+const { title, image, description, link } = Astro.props;
 ---
 
-<article class="pb-8">
-    <h2 class="font-bold text-2xl pb-6">{title}</h2>
-    <p class="text-xs font-light">{description}</p>
-    <img class="h-auto max-h-auto w-auto max-w-auto object-contain rounded-lg" src={image} alt={title} />
-    <a href={link} target="_blank" rel="noopener noreferrer"> 
-        <div class="flex items-center justify-center pt-4">
-            <p class="underline inline-flex items-center">Cótiza ya<ChevronRight class="w-5 h-5 ml-1" /></p>
-        </div>
+<article
+  class="card block-event hidden-left transition-all duration-500 ease-in-out"
+>
+  <h2 class="italic font-bold text-2xl pb-2">{title}</h2>
+  <p class="italic text-sm font-light pb-4">{description}</p>
+  <div
+    class="card-inner flex flex-col items-center justify-center bg-whithe shadow-xl"
+  >
+    <div class="card-front rounded-lg">
+      <img class="h-full w-full object-cover" src={image} alt={title} />
+    </div>
+    <div class="card-back">
+      <h1 class="text-center mt-10 text-6xl text-amber-300">{title}</h1>
+      <div class="flex flex-col items-center justify-center h-full gap-6">
+        <h2 class="text-center text-4xl pt-10">Cotiza tu evento</h2>
+        <a href="">
+          <button
+            class=" flex items-center justify-between text-center font-semibold px-24 py-5 bg-amber-400 text-black rounded-lg hover:bg-amber-500 mt-4 hover:cursor-pointer"
+          >
+            <p class="text-2xl">Aqui</p>
+            <ArrowRight/>
+          </button>
+        </a>
+      </div>
+    </div>
+
+    <a href={link} target="_blank" rel="noopener noreferrer">
+      <div class="flex items-center justify-center pt-4">
+        <p class="underline inline-flex items-center">
+          Cotiza ya<ChevronRight class="w-5 h-5 ml-1" />
+        </p>
+      </div>
     </a>
+  </div>
 </article>
 
 <style>
+  @keyframes appear {
+    from {
+      opacity: 0;
+      transform: translateX(-80px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
 
+  .hidden-left {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  .show {
+    animation: appear 1s ease-out forwards;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 1200px;
+    height: auto;
+    aspect-ratio: 1.65 / 1; /* Mantiene proporción */
+    perspective: 1000px;
+    margin-bottom: 3rem;
+    overflow: visible;
+  }
+
+  /* Media query específica para iPad Pro y tablets similares */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .card {
+      height: auto;
+      max-height: 600px;
+    }
+  }
+
+  .card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+  }
+  .card:hover .card-inner {
+    transform: rotateY(180deg) scale(0.75);
+    transition: transform 0.6s ease-in-out;
+  }
+
+  .card-front,
+  .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+  }
+  .card-front {
+    background-color: transparent;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .card-front img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    display: block; /* Esto elimina cualquier espacio extra alrededor de la imagen */
+  }
+  .card-back {
+    background-color: #342f5a;
+    transform: rotateY(180deg);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+    border-radius: 5px;
+  }
+
+  .block-event {
+    margin-bottom: 8rem;
+  }
 </style>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // Reinicia la animación cada vez que entra
+          entry.target.classList.remove("show");
+          void (entry.target as HTMLElement).offsetWidth;
+          entry.target.classList.add("show");
+        } else {
+          entry.target.classList.remove("show");
+        }
+      });
+    },
+    {
+      threshold: 0.1,
+    }
+  );
+
+  document.querySelectorAll(".block-event").forEach((el) => {
+    observer.observe(el);
+  });
+</script>
