@@ -2,13 +2,19 @@
 import "../styles/global.css";
 import '@fontsource-variable/cinzel';
 import '@fontsource/ubuntu';
+import Header from "../components/Header.astro";
+import Footer from "../sections/Footer.astro";
+import { ClientRouter } from 'astro:transitions'
 
 
 
 
 interface Props {
 	title: string;
+	description: string;
 }
+
+const { title, description }  = Astro.props;
 ---
 
 
@@ -16,21 +22,26 @@ interface Props {
 <html lang="es">
 	<head>
 		<meta charset="UTF-8" />
+		<meta name="description" content={description} />
+		<meta name="keywords" content="Astro, Layout, Example" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/svg+xml" href="/logowithout.png" />
 		<meta name="generator" content={Astro.generator} />
-		<title>{Astro.props.title}</title>
+		<title>{title}</title>
+		<ClientRouter />
 	</head>
 	<body>
+		<Header/>
 		<slot />
+		<Footer/>
 	</body>
 </html>
 
 <style is:global>
+	
 
-	html{
-		
-	}
+
+	
 	body {
 		color: #fff;
 		margin: 0;
@@ -38,11 +49,25 @@ interface Props {
 		height: 100%;
 		background: #342F5A;
 		font-family: 'Ubuntu', sans-serif;
-
 	}
-
 	h1{
 		font-family: 'Cinzel Variable', serif;
 	}
+	@keyframes slideDown {
+  	from {
+    opacity: 0;
+    transform: translateY(-100%);
+  	}
+  	to {
+    opacity: 1;
+    transform: translateY(0);
+  	}
+}
+
+.animate-slide-down {
+  animation: slideDown 300ms ease-out forwards;
+}
+
+
 	
 </style>

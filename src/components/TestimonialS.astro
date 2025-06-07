@@ -1,0 +1,115 @@
+---
+import type { Testimonial } from '../types/testimonial'
+
+interface Props {
+  testimonials: Testimonial[]
+}
+
+const { testimonials } = Astro.props
+---
+
+<section class="relative z-10 py-12 px-4 text-white text-center animate-fade-in" >
+  <div class="max-w-4xl mx-auto">
+    <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+      Más de 100 eventos e increíbles momentos mágicos.
+    </h2>
+
+    <div class="testimonial-carousel mt-8">
+
+      <div class="relative">
+        {
+          testimonials.map((t, index) => (
+            <div 
+              class={`testimonial-slide flex flex-col items-center gap-4 text-white transition-opacity duration-500 ${
+                index === 0 ? 'opacity-100' : 'opacity-0 absolute inset-0'
+              }`}
+            >
+             
+
+              <!-- Nombre y rol -->
+              <div class="flex flex-col sm:flex-row sm:items-center sm:gap-4 text-sm text-white">
+                <span class="font-semibold">{t.name}</span>
+                <span class="hidden sm:block h-4 w-px bg-white/50"></span>
+                <span class="text-white/70">{t.role}</span>
+              </div>
+
+              <!-- Estrellas -->
+              <div class="text-yellow-400 text-lg space-x-1">
+                ★ ★ ★ ★ ★
+              </div>
+
+              <!-- Cita -->
+              <p class="italic font-semibold text-white text-sm sm:text-base max-w-xl">
+                "{t.content}"
+              </p>
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="flex justify-center gap-2 mt-5">
+        {
+          testimonials.map((_, index) => (
+            <button
+              class={`w-2 h-2 rounded-full transition-all ${
+                index === 0 ? 'bg-white' : 'bg-white/40'
+              }`}
+              data-slide={index}
+            ></button>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  let currentSlide = 0
+  const slides = document.querySelectorAll('.testimonial-slide')
+  const indicators = document.querySelectorAll('[data-slide]')
+  const totalSlides = slides.length
+
+  function showSlide(index: number) {
+    // Ocultar slide actual
+    slides[currentSlide].classList.remove('opacity-100')
+    slides[currentSlide].classList.add('opacity-0')
+    indicators[currentSlide].classList.remove('bg-white')
+    indicators[currentSlide].classList.add('bg-white/40')
+
+    // Mostrar nuevo slide
+    slides[index].classList.remove('opacity-0')
+    slides[index].classList.add('opacity-100')
+    indicators[index].classList.remove('bg-white/40')
+    indicators[index].classList.add('bg-white')
+
+    currentSlide = index
+  }
+
+  function nextSlide() {
+    const next = (currentSlide + 1) % totalSlides
+    showSlide(next)
+  }
+
+  // Auto-play cada 4 segundos
+  setInterval(nextSlide, 4000)
+
+  // Click en indicadores
+  indicators.forEach((indicator, index) => {
+    indicator.addEventListener('click', () => showSlide(index))
+  })
+</script>
+<style>
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-220px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .animate-fade-in {
+    animation: fadeInDown 500ms ease-out forwards;
+  }
+</style>
