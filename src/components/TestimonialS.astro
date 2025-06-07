@@ -8,7 +8,7 @@ interface Props {
 const { testimonials } = Astro.props
 ---
 
-<section class="relative z-10 py-12 px-4 text-white text-center">
+<section class="relative z-10 py-12 px-4 text-white text-center animate-fade-in" >
   <div class="max-w-4xl mx-auto">
     <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
       Más de 100 eventos e increíbles momentos mágicos.
@@ -24,10 +24,7 @@ const { testimonials } = Astro.props
                 index === 0 ? 'opacity-100' : 'opacity-0 absolute inset-0'
               }`}
             >
-              <!-- Imagen del usuario -->
-              <div class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden">
-                <img src={t.imageUrl} alt={t.name} class="object-cover w-full h-full" />
-              </div>
+             
 
               <!-- Nombre y rol -->
               <div class="flex flex-col sm:flex-row sm:items-center sm:gap-4 text-sm text-white">
@@ -50,7 +47,7 @@ const { testimonials } = Astro.props
         }
       </div>
 
-      <div class="flex justify-center gap-2 mt-4">
+      <div class="flex justify-center gap-2 mt-5">
         {
           testimonials.map((_, index) => (
             <button
@@ -100,3 +97,19 @@ const { testimonials } = Astro.props
     indicator.addEventListener('click', () => showSlide(index))
   })
 </script>
+<style>
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-220px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .animate-fade-in {
+    animation: fadeInDown 500ms ease-out forwards;
+  }
+</style>
