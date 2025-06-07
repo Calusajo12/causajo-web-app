@@ -1,25 +1,54 @@
 ---
 import MobileMenuToggle from "../components/MobileMenuToggle.jsx";
----
 
-<header class="fixed top-0 left-0 w-full z-50 bg-transparent backdrop-blur-md " style="pointer-events: auto;">
+// Detectar la ruta actual
+const currentPath = Astro.url.pathname;
+const isHome = currentPath === "/";
+const isAboutUs = currentPath === "/aboutUs";
+const isContact = currentPath === "/contact";
+---
+<header class="fixed top-0 left-0 w-full z-50 bg-transparent backdrop-blur-md" style="pointer-events: auto;">
   <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
 
-    <MobileMenuToggle client:load/>
+    <MobileMenuToggle client:load currentPath={currentPath}/>
 
     <div class="flex items-center gap-2">
-      <img src="/logo_oficial.png" alt="Logo Calusajo" class="h-16 md:h-20" />
+      <a href="/"><img src="/logo_oficial.webp" alt="Logo Calusajo" class="h-16 md:h-20" /></a>
     </div>
 
     <nav class="hidden md:flex gap-8 text-white font-medium text-[20px]">
-      <a href="" class="hover:text-amber-300">Inicio</a>
-      <a href="#events" class="hover:text-amber-300">Eventos</a>
-      <a href="#servicios" class="hover:text-amber-300">Servicios</a>
-      <a href="/aboutUs" class="hover:text-amber-300">Conócenos</a>
+      <!-- Link a Inicio -->
+      <a
+        href="/"
+        class={`hover:text-amber-300 ${isHome ? 'underline underline-offset-8 text-amber-300' : ''}`}
+      >
+        Inicio
+      </a>
+
+      <!-- Solo mostrar en página de inicio -->
+      {isHome && (
+        <>
+          <a href="#events" class="hover:text-amber-300">Eventos</a>
+          <a href="#servicios" class="hover:text-amber-300">Servicios</a>
+        </>
+      )}
+
+      <!-- Link a Conócenos -->
+      <a
+        href="/aboutUs"
+        class={`hover:text-amber-300 ${isAboutUs ? 'underline underline-offset-8 text-amber-300' : ''}`}
+      >
+        Conócenos
+      </a>
     </nav>
 
     <button class="bg-[#e8d7b9] hover:bg-[#d5c5a7] cursor-pointer text-black px-4 py-2 rounded-md font-semibold shadow">
-      <a href="/contact">Contáctanos</a>
+      <a
+        href="/contact"
+        class={`${isContact ? 'underline underline-offset-4 text-black' : ''}`}
+      >
+        Contáctanos
+      </a>
     </button>
   </div>
 </header>

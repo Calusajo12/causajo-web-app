@@ -24,10 +24,7 @@ const { testimonials } = Astro.props
                 index === 0 ? 'opacity-100' : 'opacity-0 absolute inset-0'
               }`}
             >
-              <!-- Imagen del usuario -->
-              <div class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden">
-                <img src="/favicon.svg" alt={t.name} class="object-cover w-full h-full" />
-              </div>
+             
 
               <!-- Nombre y rol -->
               <div class="flex flex-col sm:flex-row sm:items-center sm:gap-4 text-sm text-white">
@@ -50,7 +47,7 @@ const { testimonials } = Astro.props
         }
       </div>
 
-      <div class="flex justify-center gap-2 mt-4">
+      <div class="flex justify-center gap-2 mt-5">
         {
           testimonials.map((_, index) => (
             <button
