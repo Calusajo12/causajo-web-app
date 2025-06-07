@@ -27,7 +27,7 @@ export const events: EventType[] = [
   },
   {
     title: "Baby Shower",
-    image: "public/baby-shower.webp",
+    image: "/baby-shower.webp",
     description: "Organizamos baby showers llenos de alegría y sorpresas. Desde la decoración hasta los juegos, hacemos que sea un día especial.",
     link: "https://wa.me/123456789?text=Hola%2C%20estoy%20interesado%20en%20cotizar%20un%20baby%20shower"
   },
