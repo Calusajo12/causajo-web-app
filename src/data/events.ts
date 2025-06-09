@@ -11,7 +11,7 @@ export const events: EventType[] = [
     title: "Bodas",
     image: "/boda.webp",
     description: "Haz de tu boda un día perfecto con nuestra planificación y servicios personalizados. Desde la decoración hasta el catering, tenemos todo cubierto.",
-    link: "https://wa.me+573104137728/?text=Hola%2C%20estoy%20interesado%20en%20cotizar%20un%20evento%20de%20boda"
+    link: "https://wa.me/+573104137728/?text=Hola%2C%20estoy%20interesado%20en%20cotizar%20un%20evento%20de%20boda"
   },
   {
     title: "Eventos Corporativos",

@@ -34,7 +34,7 @@ const { title, image, description, link } = Astro.props;
       <h1 class="text-center mt-10 text-6xl text-[#e8d7b9]">{title}</h1>
       <div class="flex flex-col items-center justify-center h-full gap-6">
         <h2 class="text-center text-4xl pt-10">Cotiza tu evento</h2>
-        <a href={link}>
+        <a target="_blank" href={link}>
           <button
             class=" flex items-center justify-between text-center font-semibold px-24 py-5 bg-[#e8d7b9] text-black rounded-lg mt-4 hover:cursor-pointer"
           >
