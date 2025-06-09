@@ -8,7 +8,7 @@ interface Props {
 const { testimonials } = Astro.props
 ---
 
-<section class="relative z-10 py-12 px-4 text-white text-center animate-fade-in" >
+<section class="relative z-10 py-12 px-4 text-white text-center animate-fade-in">
   <div class="max-w-4xl mx-auto">
     <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
       Más de 100 eventos e increíbles momentos mágicos.
@@ -63,39 +63,99 @@ const { testimonials } = Astro.props
   </div>
 </section>
 <script>
-  let currentSlide = 0
-  const slides = document.querySelectorAll('.testimonial-slide')
-  const indicators = document.querySelectorAll('[data-slide]')
-  const totalSlides = slides.length
+  class TestimonialCarousel {
+    private currentSlide = 0;
+    private slides: NodeListOf<Element>;
+    private indicators: NodeListOf<Element>;
+    private interval: ReturnType<typeof setInterval> | undefined;
+    private totalSlides: number;
 
-  function showSlide(index: number) {
-    // Ocultar slide actual
-    slides[currentSlide].classList.remove('opacity-100')
-    slides[currentSlide].classList.add('opacity-0')
-    indicators[currentSlide].classList.remove('bg-white')
-    indicators[currentSlide].classList.add('bg-white/40')
+    constructor() {
+      this.slides = document.querySelectorAll('.testimonial-slide');
+      this.indicators = document.querySelectorAll('[data-slide]');
+      this.totalSlides = this.slides.length;
+      
+      if (this.totalSlides === 0) return;
+      
+      this.setupEventListeners();
+      this.startAutoplay();
+    }
 
-    // Mostrar nuevo slide
-    slides[index].classList.remove('opacity-0')
-    slides[index].classList.add('opacity-100')
-    indicators[index].classList.remove('bg-white/40')
-    indicators[index].classList.add('bg-white')
+    private showSlide(index: number): void {
+      // Ocultar slide actual
+      this.slides[this.currentSlide].classList.remove('opacity-100');
+      this.slides[this.currentSlide].classList.add('opacity-0');
+      this.indicators[this.currentSlide].classList.remove('bg-white');
+      this.indicators[this.currentSlide].classList.add('bg-white/40');
 
-    currentSlide = index
+      // Mostrar nuevo slide
+      this.slides[index].classList.remove('opacity-0');
+      this.slides[index].classList.add('opacity-100');
+      this.indicators[index].classList.remove('bg-white/40');
+      this.indicators[index].classList.add('bg-white');
+
+      this.currentSlide = index;
+    }
+
+    private nextSlide(): void {
+      const next = (this.currentSlide + 1) % this.totalSlides;
+      this.showSlide(next);
+    }
+
+    private startAutoplay(): void {
+      this.stopAutoplay(); // Limpiar intervalo existente si hay
+      this.interval = setInterval(() => this.nextSlide(), 5000);
+    }
+
+    private stopAutoplay(): void {
+      if (this.interval) {
+        clearInterval(this.interval);
+        this.interval = undefined;
+      }
+    }
+
+    private setupEventListeners(): void {
+      // Click en indicadores
+      this.indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+          this.showSlide(index);
+          this.startAutoplay(); // Reiniciar autoplay después del clic
+        });
+      });
+
+      // Pausar en hover
+      const carousel = document.querySelector('.testimonial-carousel');
+      if (carousel) {
+        carousel.addEventListener('mouseenter', () => this.stopAutoplay());
+        carousel.addEventListener('mouseleave', () => this.startAutoplay());
+      }
+    }
+
+    public cleanup(): void {
+      this.stopAutoplay();
+    }
   }
 
-  function nextSlide() {
-    const next = (currentSlide + 1) % totalSlides
-    showSlide(next)
+  let carouselInstance: TestimonialCarousel | undefined;
+
+  // Función para inicializar el carrusel
+  function initCarousel() {
+    if (carouselInstance) {
+      carouselInstance.cleanup();
+    }
+    carouselInstance = new TestimonialCarousel();
   }
 
-  // Auto-play cada 4 segundos
-  setInterval(nextSlide, 4000)
-
-  // Click en indicadores
-  indicators.forEach((indicator, index) => {
-    indicator.addEventListener('click', () => showSlide(index))
-  })
+  // Inicializar cuando el DOM esté listo
+  document.addEventListener('astro:page-load', initCarousel);
+  
+  // Limpiar cuando la página se desmonte
+  document.addEventListener('astro:before-swap', () => {
+    if (carouselInstance) {
+      carouselInstance.cleanup();
+      carouselInstance = undefined;
+    }
+  });
 </script>
 <style>
   @keyframes fadeInDown {
