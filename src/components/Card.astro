@@ -4,16 +4,18 @@ import Calendar from "../../Calendar.astro";
 interface Props {
   name: string;
   description: string;
+  icon: any;
 }
 
-const { name, description } = Astro.props;
+const { name, description, icon } = Astro.props;
+const IconComponent = icon;
 ---
 
 <article
   class="flex flex-col w-full md:w-full lg:w-96 rounded-lg shadow-2xl bg-transparent py-6 md:py-8 transition-transform duration-500 ease-in-out transform hover:scale-105 items-center border-[1px] border-black block-service"
 >
   <picture class="w-16 h-16 md:w-20 md:h-20 text-amber-300 flex items-center justify-center">
-    <Calendar />
+    <IconComponent/>
   </picture>
   <div class="flex flex-col items-center gap-2 text-center w-full px-4 mt-4">
     <h2 class="text-xl md:text-2xl font-bold text-white">{name}</h2>

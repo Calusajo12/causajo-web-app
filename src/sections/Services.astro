@@ -24,14 +24,14 @@ const secondRow = services.slice(3, 6);
     <div class="flex flex-col lg:flex-row gap-8 service">
       {
         firstRow.map((service) => (
-          <Card name={service.name} description={service.description} />
+          <Card name={service.name} description={service.description} icon={service.icon} />
         ))
       }
     </div>
     <div class="flex flex-col lg:flex-row gap-8 service">
       {
         secondRow.map((service) => (
-          <Card name={service.name} description={service.description} />
+          <Card name={service.name} description={service.description} icon={service.icon} />
         ))
       }
     </div>
