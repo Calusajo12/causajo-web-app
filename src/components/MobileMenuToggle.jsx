@@ -56,12 +56,14 @@ export default function MobileMenuToggle({ currentPath }) {
             <>
               <a
                 href="#events"
+                onClick={() => setOpen(false)}
                 className="block text-white py-2 hover:text-amber-300"
               >
                 Eventos
               </a>
               <a
                 href="#services"
+                onClick={() => setOpen(false)}
                 className="block text-white py-2 hover:text-amber-300"
               >
                 Servicios
