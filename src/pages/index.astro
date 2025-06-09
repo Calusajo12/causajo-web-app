@@ -1,4 +1,5 @@
 ---
+import SectionContainer from '../components/SectionContainer.astro';
 import Layout from '../layouts/Layout.astro';
 import Events from '../sections/Events.astro';
 import Home from '../sections/Home.astro';
@@ -11,7 +12,13 @@ import Services from '../sections/Services.astro';
 <Layout title='Pagina Oficial de Calusajo' description='Bienvenido a la pagina oficial de Calusajo, un lugar para disfrutar de eventos y servicios de calidad.'>
 	<main>
 		<Home />
+
+		<SectionContainer id='events'>
 		<Events />
+		</SectionContainer>
+
+		<SectionContainer id='services'>
 		<Services />
+		</SectionContainer>
 	</main>
 </Layout>

@@ -40,7 +40,15 @@ const { title, description }  = Astro.props;
 <style is:global>
 	
 
+	html{
+		scroll-behavior: smooth;
 
+	}
+
+	button, a{
+		@apply transition-transform duration-200 hover:scale-105;
+		cursor: pointer;
+	}
 	
 	body {
 		color: #fff;

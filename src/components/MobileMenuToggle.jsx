@@ -61,7 +61,7 @@ export default function MobileMenuToggle({ currentPath }) {
                 Eventos
               </a>
               <a
-                href="#servicios"
+                href="#services"
                 className="block text-white py-2 hover:text-amber-300"
               >
                 Servicios
