@@ -1,5 +1,6 @@
 ---
-import ArrowRight from "@lucide/astro/icons/arrow-right";
+import ArrowRight from './icons/ArrowRight.astro';
+
 
 export interface Props {
   title: string;
@@ -21,7 +22,13 @@ const { title, image, description, link } = Astro.props;
     class="card-inner flex flex-col items-center justify-center bg-whithe shadow-xl"
   >
     <div class="card-front rounded-lg">
-      <img class="h-full w-full object-cover" src={image} alt={title} />
+      <img 
+        class="h-full w-full object-cover image-loader" 
+        src={image} 
+        alt={title}
+        loading="eager"
+        onload="this.classList.add('loaded')"
+      />
     </div>
     <div class="card-back">
       <h1 class="text-center mt-10 text-6xl text-amber-300">{title}</h1>
@@ -32,6 +39,7 @@ const { title, image, description, link } = Astro.props;
             class=" flex items-center justify-between text-center font-semibold px-24 py-5 bg-amber-400 text-black rounded-lg hover:bg-amber-500 mt-4 hover:cursor-pointer"
           >
             <p class="text-2xl">Aqui</p>
+            <ArrowRight/>
           </button>
         </a>
       </div>
@@ -54,10 +62,12 @@ const { title, image, description, link } = Astro.props;
   .hidden-left {
     opacity: 0;
     transform: translateX(-20px);
+    visibility: hidden;
   }
 
   .show {
     animation: appear 1s ease-out forwards;
+    visibility: visible;
   }
 
   .card {
@@ -112,6 +122,13 @@ const { title, image, description, link } = Astro.props;
     width: 100%;
     object-fit: cover;
     display: block; /* Esto elimina cualquier espacio extra alrededor de la imagen */
+    loading: auto;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .card-front img.loaded {
+    opacity: 1;
   }
   .card-back {
     background-color: #342f5a;
@@ -126,25 +143,75 @@ const { title, image, description, link } = Astro.props;
 </style>
 
 <script>
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          // Reinicia la animación cada vez que entra
-          entry.target.classList.remove("show");
-          void (entry.target as HTMLElement).offsetWidth;
-          entry.target.classList.add("show");
-        } else {
-          entry.target.classList.remove("show");
-        }
-      });
-    },
-    {
-      threshold: 0.1,
-    }
-  );
+  // Función para manejar la carga de imágenes
+  function handleImageLoading() {
+    const images = document.querySelectorAll('.image-loader') as NodeListOf<HTMLImageElement>;
+    images.forEach((img) => {
+      if (img.complete) {
+        img.classList.add('loaded');
+      } else {
+        img.addEventListener('load', function(this: HTMLImageElement) {
+          this.classList.add('loaded');
+        });
+        img.addEventListener('error', function(this: HTMLImageElement) {
+          console.warn('Error loading image:', this.src);
+          this.classList.add('loaded'); // Mostrar aunque falle
+        });
+      }
+    });
+  }
 
-  document.querySelectorAll(".block-event").forEach((el) => {
-    observer.observe(el);
+  // Función para inicializar el observer
+  function initializeObserver() {
+    // Limpiar observers anteriores si existen
+    if ((window as any).eventObserver) {
+      (window as any).eventObserver.disconnect();
+    }
+
+    (window as any).eventObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Reinicia la animación cada vez que entra
+            entry.target.classList.remove("show");
+            void (entry.target as HTMLElement).offsetWidth;
+            entry.target.classList.add("show");
+          } else {
+            entry.target.classList.remove("show");
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+      }
+    );
+
+    // Observar todos los elementos block-event
+    document.querySelectorAll(".block-event").forEach((el) => {
+      (window as any).eventObserver.observe(el);
+    });
+  }
+
+  // Función para inicializar todo
+  function initialize() {
+    handleImageLoading();
+    initializeObserver();
+  }
+
+  // Inicializar cuando el DOM esté listo
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initialize);
+  } else {
+    initialize();
+  }
+
+  // Reinicializar en navegación de Astro
+  document.addEventListener('astro:page-load', initialize);
+  
+  // Limpiar cuando se navega fuera de la página
+  document.addEventListener('astro:before-preparation', () => {
+    if ((window as any).eventObserver) {
+      (window as any).eventObserver.disconnect();
+    }
   });
 </script>

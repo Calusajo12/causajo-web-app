@@ -1,5 +1,5 @@
 ---
-import Calendar from "../../Calendar.astro";
+import Calendar from './icons/Calendar.astro';
 
 interface Props {
   name: string;
@@ -38,6 +38,7 @@ const IconComponent = icon;
   .block-service {
     opacity: 0;
     transform: translateX(-20px);
+    visibility: hidden;
     height: auto;
     min-height: 250px;
     display: flex;
@@ -80,29 +81,56 @@ const IconComponent = icon;
 
   .show {
     animation: appear 1s ease-out forwards;
+    visibility: visible;
   }
 </style>
 
 <script>
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          // Reinicia la animación cada vez que entra
-          entry.target.classList.remove("show");
-          void (entry.target as HTMLElement).offsetWidth;
-          entry.target.classList.add("show");
-        } else {
-          entry.target.classList.remove("show");
-        }
-      });
-    },
-    {
-      threshold: 0.1,
+  // Función para inicializar el observer
+  function initializeObserver() {
+    // Limpiar observers anteriores si existen
+    if ((window as any).serviceObserver) {
+      (window as any).serviceObserver.disconnect();
     }
-  );
 
-  document.querySelectorAll(".block-service").forEach((el) => {
-    observer.observe(el);
+    (window as any).serviceObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Reinicia la animación cada vez que entra
+            entry.target.classList.remove("show");
+            void (entry.target as HTMLElement).offsetWidth;
+            entry.target.classList.add("show");
+          } else {
+            entry.target.classList.remove("show");
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+      }
+    );
+
+    // Observar todos los elementos block-service
+    document.querySelectorAll(".block-service").forEach((el) => {
+      (window as any).serviceObserver.observe(el);
+    });
+  }
+
+  // Inicializar cuando el DOM esté listo
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeObserver);
+  } else {
+    initializeObserver();
+  }
+
+  // Reinicializar en navegación de Astro
+  document.addEventListener('astro:page-load', initializeObserver);
+  
+  // Limpiar cuando se navega fuera de la página
+  document.addEventListener('astro:before-preparation', () => {
+    if ((window as any).serviceObserver) {
+      (window as any).serviceObserver.disconnect();
+    }
   });
 </script>

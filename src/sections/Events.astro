@@ -2,8 +2,8 @@
 import Event from "../components/Event.astro";
 import Carousel from "../components/Carousel.astro";
 import { events } from "../../data/events";
+import ArrowRight from "../components/icons/ArrowRight.astro";
 const firstThreeEvents = events.slice(0, 3);
-import ArrowRight from "@lucide/astro/icons/arrow-right";
 ---
 
 <section class="p-4 md:p-8 mb-5">
@@ -48,6 +48,7 @@ import ArrowRight from "@lucide/astro/icons/arrow-right";
           <p class="font-bold inline-flex">
             Ver todos
           </p>
+          <ArrowRight class="ml-2" />
         </div>
       </a>
       <div
