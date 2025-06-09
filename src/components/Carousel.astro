@@ -12,10 +12,18 @@ const { events } = Astro.props;
   <div class="carousel-inner flex transition-transform duration-300 ease-in-out"  data-current="0">
     {
       events.map((event, index) => (
-        <div class="carousel-item w-full px-4 flex-shrink-0" style="flex: 0 0 100%;">
-          <div class="flex flex-col items-center p-2">
+        <div class="carousel-item w-full px-2 flex-shrink-0" style="flex: 0 0 100%;">
+          <div class="flex flex-col items-center p-1">
             <h2 class="font-bold text-xl pb-2">{event.title}</h2>
-            <img class="h-auto w-auto max-w-dvw object-contain px-2 rounded-lg" src={event.image} alt={event.title} />
+            <div class="carousel-image-container">
+              <img 
+                class="carousel-image" 
+                src={event.image} 
+                alt={event.title}
+                loading="eager"
+                onload="this.classList.add('loaded')"
+              />
+            </div>
             <a href={event.link} target="_blank" rel="noopener noreferrer">
               <div class="flex items-center justify-center pt-2">
                 <p class="underline inline-flex items-center">Cótiza ya</p>
@@ -29,7 +37,7 @@ const { events } = Astro.props;
   
   
   
-  <div class="carousel-indicators flex justify-center mt-2">
+  <div class="carousel-indicators flex justify-center">
     {
       events.map((_, index) => (
         <button
@@ -43,7 +51,13 @@ const { events } = Astro.props;
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  // Función para inicializar el carrusel
+  function initializeCarousel() {
+    // Limpiar event listeners anteriores si existen
+    if ((window as any).carouselCleanup) {
+      (window as any).carouselCleanup();
+    }
+
     // Selecciona elementos del carrusel
     const container = document.querySelector('.carousel-container') as HTMLElement;
     const inner = document.querySelector('.carousel-inner') as HTMLElement;
@@ -58,6 +72,35 @@ const { events } = Astro.props;
     let prevTranslate = 0;
     let currentIndex = 0;
     const itemCount = inner.children.length;
+
+    // Array para almacenar los event listeners para poder limpiarlos después
+    const eventListeners: Array<{ element: any, event: string, handler: any }> = [];
+
+    // Función helper para agregar event listeners que se pueden limpiar
+    function addEventListenerWithCleanup(element: any, event: string, handler: any) {
+      element.addEventListener(event, handler);
+      eventListeners.push({ element, event, handler });
+    }
+
+    // Función para manejar la carga de imágenes del carrusel
+    function handleCarouselImageLoading() {
+      const images = container.querySelectorAll('.carousel-image') as NodeListOf<HTMLImageElement>;
+      images.forEach((img) => {
+        if (img.complete) {
+          img.classList.add('loaded');
+        } else {
+          const loadHandler = function(this: HTMLImageElement) {
+            this.classList.add('loaded');
+          };
+          const errorHandler = function(this: HTMLImageElement) {
+            console.warn('Error loading carousel image:', this.src);
+            this.classList.add('loaded'); // Mostrar aunque falle
+          };
+          addEventListenerWithCleanup(img, 'load', loadHandler);
+          addEventListenerWithCleanup(img, 'error', errorHandler);
+        }
+      });
+    }
     
     // Actualiza los indicadores activos
     function updateIndicators() {
@@ -88,50 +131,43 @@ const { events } = Astro.props;
     
     // Inicializa los indicadores
     indicators.forEach((indicator, idx) => {
-      indicator.addEventListener('click', () => {
-        goToSlide(idx);
-      });
+      const clickHandler = () => goToSlide(idx);
+      addEventListenerWithCleanup(indicator, 'click', clickHandler);
     });
     
     // Eventos táctiles para móvil
-    container.addEventListener('touchstart', (e: TouchEvent) => {
+    const touchStartHandler = (e: TouchEvent) => {
       startX = e.touches[0].clientX;
       isDragging = true;
-      
-      // Evita la animación durante el arrastre
       inner.style.transition = 'none';
-    });
+    };
+    addEventListenerWithCleanup(container, 'touchstart', touchStartHandler);
     
     // Eventos para ratón (ordenadores sin pantalla táctil)
-    container.addEventListener('mousedown', (e: MouseEvent) => {
+    const mouseDownHandler = (e: MouseEvent) => {
       startX = e.clientX;
       isDragging = true;
-      
-      // Evita la animación durante el arrastre
       inner.style.transition = 'none';
-      
-      // Previene selección de texto durante el arrastre
       e.preventDefault();
-    });
+    };
+    addEventListenerWithCleanup(container, 'mousedown', mouseDownHandler);
     
-    container.addEventListener('touchmove', (e: TouchEvent) => {
+    const touchMoveHandler = (e: TouchEvent) => {
       if (!isDragging) return;
-      
       const currentX = e.touches[0].clientX;
       const diff = currentX - startX;
-      
       updateTranslate(diff);
-    });
+    };
+    addEventListenerWithCleanup(container, 'touchmove', touchMoveHandler);
     
     // Evento para mover con ratón
-    window.addEventListener('mousemove', (e: MouseEvent) => {
+    const mouseMoveHandler = (e: MouseEvent) => {
       if (!isDragging) return;
-      
       const currentX = e.clientX;
       const diff = currentX - startX;
-      
       updateTranslate(diff);
-    });
+    };
+    addEventListenerWithCleanup(window, 'mousemove', mouseMoveHandler);
     
     // Función común para actualizar la posición (adaptada para carrusel infinito)
     function updateTranslate(diff: number) {
@@ -139,17 +175,6 @@ const { events } = Astro.props;
       currentTranslate = prevTranslate + diff;
       inner.style.transform = `translateX(${currentTranslate}px)`;
     }
-    
-    container.addEventListener('touchend', () => {
-      finishDrag();
-    });
-    
-    // Evento para finalizar el arrastre con ratón
-    window.addEventListener('mouseup', () => {
-      if (isDragging) {
-        finishDrag();
-      }
-    });
     
     // Función común para finalizar el arrastre (adaptada para carrusel infinito)
     function finishDrag() {
@@ -173,9 +198,20 @@ const { events } = Astro.props;
         goToSlide(currentIndex);
       }
     }
+
+    const touchEndHandler = () => finishDrag();
+    addEventListenerWithCleanup(container, 'touchend', touchEndHandler);
+    
+    // Evento para finalizar el arrastre con ratón
+    const mouseUpHandler = () => {
+      if (isDragging) {
+        finishDrag();
+      }
+    };
+    addEventListenerWithCleanup(window, 'mouseup', mouseUpHandler);
     
     // Manejo del redimensionamiento de la ventana
-    window.addEventListener('resize', () => {
+    const resizeHandler = () => {
       // Reposicionar con el tamaño actual
       inner.style.transition = 'none';
       goToSlide(currentIndex);
@@ -183,26 +219,50 @@ const { events } = Astro.props;
       setTimeout(() => {
         inner.style.transition = 'transform 0.3s ease-in-out';
       }, 50);
-    });
+    };
+    addEventListenerWithCleanup(window, 'resize', resizeHandler);
     
     // Configurar botones de navegación
     const prevButton = document.querySelector('.carousel-prev');
     const nextButton = document.querySelector('.carousel-next');
     
     if (prevButton) {
-      prevButton.addEventListener('click', () => {
-        goToSlide(currentIndex - 1);
-      });
+      const prevClickHandler = () => goToSlide(currentIndex - 1);
+      addEventListenerWithCleanup(prevButton, 'click', prevClickHandler);
     }
     
     if (nextButton) {
-      nextButton.addEventListener('click', () => {
-        goToSlide(currentIndex + 1);
-      });
+      const nextClickHandler = () => goToSlide(currentIndex + 1);
+      addEventListenerWithCleanup(nextButton, 'click', nextClickHandler);
     }
     
-    
     updateIndicators();
+    handleCarouselImageLoading();
+
+    // Función de limpieza para remover todos los event listeners
+    (window as any).carouselCleanup = () => {
+      eventListeners.forEach(({ element, event, handler }) => {
+        element.removeEventListener(event, handler);
+      });
+      eventListeners.length = 0;
+    };
+  }
+
+  // Inicializar cuando el DOM esté listo
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeCarousel);
+  } else {
+    initializeCarousel();
+  }
+
+  // Reinicializar en navegación de Astro
+  document.addEventListener('astro:page-load', initializeCarousel);
+  
+  // Limpiar cuando se navega fuera de la página
+  document.addEventListener('astro:before-preparation', () => {
+    if ((window as any).carouselCleanup) {
+      (window as any).carouselCleanup();
+    }
   });
 </script>
 
@@ -213,8 +273,8 @@ const { events } = Astro.props;
     cursor: grab;
     height: auto;
     margin-bottom: 1rem;
-    overflow: hidden; /* Cambiado de visible a hidden para evitar desbordamiento */
-    width: 100%; /* Asegura que el contenedor no se desborde horizontalmente */
+    overflow: hidden; 
+    width: 100%; 
   }
   
   .carousel-container:active {
@@ -233,6 +293,56 @@ const { events } = Astro.props;
 
   .carousel-inner img {
     transition: transform 0.3s ease;
+  }
+
+  .carousel-image-container {
+    width: calc(100vw - 2rem); 
+    max-width: calc(100vw - 2rem); 
+    height: 350px; 
+    margin: 0 auto;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background-color: #f3f4f6; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  .carousel-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .carousel-image.loaded {
+    opacity: 1;
+  }
+
+  @media (max-width: 640px) {
+    .carousel-image-container {
+      width: calc(100vw - 1.5rem); 
+      max-width: calc(100vw - 1.5rem);
+      height: 300px; 
+    }
+  }
+
+  @media (min-width: 641px) and (max-width: 768px) {
+    .carousel-image-container {
+      width: calc(100vw - 2rem);
+      max-width: calc(100vw - 2rem);
+      height: 300px; 
+    }
+  }
+
+  @media (min-width: 769px) {
+    .carousel-image-container {
+      width: calc(100vw - 3rem); 
+      max-width: calc(100vw - 3rem);
+      height: 300px; 
+    }
   }
 
   
