@@ -1,7 +1,7 @@
-import type { AdvantagesType } from "./AdvantagesType";
-import Experience from "./Experience.astro";
-import Personalization from "./Personalization.astro";
-import Quality from "./Quality.astro";
+import type { AdvantagesType } from "../types/AdvantagesType";
+import Experience from "../components/icons/Experience.astro";
+import Personalization from "../components/icons/Personalization.astro";
+import Quality from "../components/icons/Quality.astro";
 
 export const advantages:AdvantagesType[] = [
     {

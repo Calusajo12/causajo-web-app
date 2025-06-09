@@ -1,4 +1,4 @@
-import type { EventType } from '../src/types/eventType';
+import type { EventType } from '../types/eventType';
 
 export const events: EventType[] = [
   {

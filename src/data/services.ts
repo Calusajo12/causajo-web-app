@@ -1,10 +1,10 @@
-import Calendar from "./Calendar.astro";
-import type { Service } from "./ServiceType";
-import Home from './Home.astro';
-import PaintRoller from "./PaintRoller.astro";
-import Volume from "./Volume.astro";
-import HandPlatter from "./HandPlatter.astro";
-import Person from "./Person.astro";
+import Calendar from "../components/icons/Calendar.astro";
+import type { Service } from "../types/ServiceType";
+import Home from "../components/icons/Home.astro";
+import PaintRoller from "../components/icons/PaintRoller.astro";
+import Volume from "../components/icons/Volume.astro";
+import HandPlatter from "../components/icons/HandPlatter.astro"; 
+import Person from "../components/icons/Person.astro";
 
 export const services:Service[] = [
     {
