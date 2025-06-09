@@ -6,7 +6,7 @@ import Quality from "./Quality.astro";
 export const advantages:AdvantagesType[] = [
     {
         title: "Experiencia",
-        description: "Más de 10 años organizando eventos exitosos.",
+        description: "Más de 5 años organizando eventos exitosos.",
         icon: Experience
     },
     {
