@@ -20,7 +20,7 @@ const isContact = currentPath === "/contact";
       <!-- Link a Inicio -->
       <a
         href="/"
-        class={`hover:text-amber-300 ${isHome ? 'underline underline-offset-8 text-amber-300' : ''}`}
+        class={`hover:text-[#e8d7b9] ${isHome ? 'underline underline-offset-8 text-[#e8d7b9]' : ''}`}
       >
         Inicio
       </a>
@@ -28,15 +28,15 @@ const isContact = currentPath === "/contact";
       <!-- Solo mostrar en página de inicio -->
       {isHome && (
         <>
-          <a href="#events" class="hover:text-amber-300">Eventos</a>
-          <a href="#services" class="hover:text-amber-300">Servicios</a>
+          <a href="#events" class="hover:text-[#e8d7b9]">Eventos</a>
+          <a href="#services" class="hover:text-[#e8d7b9]">Servicios</a>
         </>
       )}
 
       <!-- Link a Conócenos -->
       <a
         href="/aboutUs"
-        class={`hover:text-amber-300 ${isAboutUs ? 'underline underline-offset-8 text-amber-300' : ''}`}
+        class={`hover:text-[#e8d7b9] ${isAboutUs ? 'underline underline-offset-8 text-[#e8d7b9]' : ''}`}
       >
         Conócenos
       </a>

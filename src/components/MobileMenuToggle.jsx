@@ -45,8 +45,8 @@ export default function MobileMenuToggle({ currentPath }) {
         >
           <a
             href="/"
-            className={`block text-white py-2 hover:text-amber-300 ${
-              isHome ? "underline underline-offset-8 text-amber-300" : ""
+            className={`block text-white py-2 hover:text-[#e8d7b9] ${
+              isHome ? "underline underline-offset-8 text-[#e8d7b9]" : ""
             }`}
           >
             Inicio
@@ -57,14 +57,14 @@ export default function MobileMenuToggle({ currentPath }) {
               <a
                 href="#events"
                 onClick={() => setOpen(false)}
-                className="block text-white py-2 hover:text-amber-300"
+                className="block text-white py-2 hover:text-[#e8d7b9]"
               >
                 Eventos
               </a>
               <a
                 href="#services"
                 onClick={() => setOpen(false)}
-                className="block text-white py-2 hover:text-amber-300"
+                className="block text-white py-2 hover:text-[#e8d7b9]"
               >
                 Servicios
               </a>
@@ -73,8 +73,8 @@ export default function MobileMenuToggle({ currentPath }) {
 
           <a
             href="/aboutUs"
-            className={`block text-white py-2 hover:text-amber-300 ${
-              isAboutUs ? "underline underline-offset-8 text-amber-300" : ""
+            className={`block text-white py-2 hover:text-[#e8d7b9] ${
+              isAboutUs ? "underline underline-offset-8 text-[#e8d7b9]" : ""
             }`}
           >
             Conócenos
