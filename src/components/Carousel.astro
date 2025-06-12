@@ -26,7 +26,7 @@ const { events } = Astro.props;
             </div>
             <a href={event.link} target="_blank" rel="noopener noreferrer">
               <div class="flex items-center justify-center pt-2">
-                <p class="underline inline-flex items-center">Cótiza ya</p>
+                <p class="underline inline-flex items-center">Cotiza ya</p>
               </div>
             </a>
           </div>
@@ -181,7 +181,7 @@ const { events } = Astro.props;
       isDragging = false;
       inner.style.transition = 'transform 0.3s ease-in-out';
       
-      const threshold = container.offsetWidth * 0.2; // 20% del ancho para cambiar de slide
+      const threshold = container.offsetWidth * 0.1; // 20% del ancho para cambiar de slide
       const diff = currentTranslate - prevTranslate;
       
       if (Math.abs(diff) > threshold) {
