@@ -5,7 +5,7 @@
     </h1>
 
     <!-- Misión -->
-    <div class="grid md:grid-cols-2 gap-12 items-center mb-16">
+    <div class="grid md:grid-cols-2 gap-12 items-center mb-16 block-service">
       <div class="space-y-6 order-1">
         <h3 class="text-2xl font-bold text-[#e8d7b9]">Misión</h3>
         <p class="text-gray-200 leading-relaxed">
@@ -23,7 +23,7 @@
     </div>
 
     <!-- Visión -->
-    <div class="grid md:grid-cols-2 gap-12 items-center">
+    <div class="grid md:grid-cols-2 gap-12 items-center block-service">
       <!-- Para que en mobile texto esté arriba -->
       <div class="space-y-6 order-1 md:order-2">
         <h3 class="text-2xl font-bold text-[#e8d7b9]">Visión</h3>
@@ -41,3 +41,73 @@
 
   </div>
 </section>
+
+<style>
+  @keyframes appear {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  
+
+  .show {
+    animation: appear 1s ease-out forwards;
+    visibility: visible;
+  }
+</style>
+
+<script>
+  // Función para inicializar el observer
+  function initializeObserver() {
+    // Limpiar observers anteriores si existen
+    if ((window as any).serviceObserver) {
+      (window as any).serviceObserver.disconnect();
+    }
+
+    (window as any).serviceObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Reinicia la animación cada vez que entra
+            entry.target.classList.remove("show");
+            void (entry.target as HTMLElement).offsetWidth;
+            entry.target.classList.add("show");
+          } else {
+            entry.target.classList.remove("show");
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+      }
+    );
+
+    // Observar todos los elementos block-service
+    document.querySelectorAll(".block-service").forEach((el) => {
+      (window as any).serviceObserver.observe(el);
+    });
+  }
+
+  // Inicializar cuando el DOM esté listo
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeObserver);
+  } else {
+    initializeObserver();
+  }
+
+  // Reinicializar en navegación de Astro
+  document.addEventListener('astro:page-load', initializeObserver);
+  
+  // Limpiar cuando se navega fuera de la página
+  document.addEventListener('astro:before-preparation', () => {
+    if ((window as any).serviceObserver) {
+      (window as any).serviceObserver.disconnect();
+    }
+  });
+</script>

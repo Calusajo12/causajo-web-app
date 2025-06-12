@@ -6,7 +6,7 @@ import Quality from "../components/icons/Quality.astro";
 export const advantages:AdvantagesType[] = [
     {
         title: "Experiencia",
-        description: "Más de 5 años organizando eventos exitosos.",
+        description: "Mas de 5 años organizando eventos exitosos. Nuestro equipo cuenta con la experiencia necesaria para hacer de tu evento un éxito.",
         icon: Experience
     },
     {
