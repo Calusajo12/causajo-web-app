@@ -5,6 +5,7 @@ import '@fontsource/ubuntu';
 import Header from "../components/Header.astro";
 import Footer from "../sections/Footer.astro";
 import { ClientRouter } from 'astro:transitions'
+import WhatsAppButton from "../components/WhatsAppButton.astro";
 
 
 
@@ -33,6 +34,7 @@ const { title, description }  = Astro.props;
 	<body>
 		<Header/>
 		<slot />
+		<WhatsAppButton />
 		<Footer/>
 	</body>
 </html>

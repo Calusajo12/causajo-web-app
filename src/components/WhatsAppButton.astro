@@ -1,0 +1,17 @@
+---
+import WhatsAppIcon from "./icons/WhatsappIcon.astro"; // Ajusta esta ruta según donde esté tu ícono
+
+const phoneNumber = "573104137728"; 
+const message = "Hola, quiero cotizar un evento (cuenta sobre tu evento): "; // ← Mensaje predefinido
+const link = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+---
+
+<a
+  href={link}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="fixed bottom-5 right-5 z-50 w-[55px] h-[55px] rounded-full shadow-lg hover:scale-110 transition-transform bg-white p-1"
+  aria-label="Habla con nosotros por WhatsApp"
+>
+  <WhatsAppIcon class="w-full h-full" />
+</a>
