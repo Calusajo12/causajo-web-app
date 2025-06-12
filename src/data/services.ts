@@ -27,7 +27,7 @@ export const services:Service[] = [
     },
     {
         id: 4,
-        name: "Sonido y cristaleria",
+        name: "Sonido y cristalería",
         description: "Provisión de equipos de sonido y cristalería para eventos.",
         icon: Volume
     },
