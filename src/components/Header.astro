@@ -1,10 +1,15 @@
 ---
 import MobileMenuToggle from "../components/MobileMenuToggle.jsx";
 
+function normalizePath(path) {
+  if (path === "/") return "/";
+  return path.replace(/\/$/, "");
+}
+
 // Detectar la ruta actual
-const currentPath = Astro.url.pathname;
+const currentPath = normalizePath(Astro.url.pathname);
 const isHome = currentPath === "/";
-const isAboutUs = currentPath === "/aboutUs/";
+const isAboutUs = currentPath === "/aboutUs";
 const isContact = currentPath === "/contact";
 console.log(currentPath);
 ---
